@@ -1,0 +1,417 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Pass Manager",
+    "description": "Pass Manager a digital vault"
+  },
+  "host": "localhost:8000",
+  "basePath": "/api/v1/passManager",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "API for users in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "securityDefinitions": {
+    "JWT": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Item": {
+      "properties": {
+        "_id": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "user": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "siteName": {
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        },
+        "sitePassword": {
+          "type": "string"
+        },
+        "Notes": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/signUp": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "SignUp",
+        "description": "Sign Up",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Sign up with phone number",
+            "example": {
+              "userName": "Your phone Number",
+              "mPin": "4 digit mPin",
+              "confirmMpin": "4 digit mPin"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Account Created"
+          },
+          "400": {
+            "description": "Mobile Number already in use!"
+          }
+        }
+      }
+    },
+    "/forgotMpin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Forgot MPIN",
+        "description": "Forgot MPIN",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Enter your mobile Number",
+            "example": {
+              "mobileNumber": "your phone number"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/resetMpin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Reset MPIN",
+        "description": "Reset your MPIN",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "enter OTP and new MPIN",
+            "example": {
+              "mobileNumber": "your phone number",
+              "mPin": "Mpin",
+              "confirmMpin": "Mpin",
+              "otp": "4 digit Otp recieved on Your phone Number"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok MPIN reset Successfull"
+          },
+          "400": {
+            "description": "You have reached the maximum limit to  reset mPin therefore your data has been deleted!"
+          },
+          "500": {
+            "description": "Invalid OTP"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Login Users",
+        "description": "Login",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "Login with phone number",
+            "example": {
+              "mobileNumber": "Your phone Number",
+              "mPin": "4 digit mPin"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "401": {
+            "description": "Invalid Authorization(invalid email or password "
+          }
+        }
+      }
+    },
+    "/home": {
+      "get": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Get all website credentails of logged in user",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Get website credentails by category",
+            "type": "string",
+            "example": "Social media"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "403": {
+            "description": "User is not authenticated"
+          },
+          "404": {
+            "description": "Items are not availble with corresponging category || Please add the document view Website Credentials"
+          }
+        }
+      }
+    },
+    "/add": {
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Add site",
+        "description": "Add site",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "add site details",
+            "example": {
+              "url": "https://instagram.com",
+              "category": "Social media",
+              "siteName": "Instagram",
+              "userName": "UserName",
+              "sitePassword": "Password",
+              "notes": "Instagram password"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "400": {
+            "description": "Bad request (There is a data availble for corresponding url or Site Name. Please provide the unique url and SiteName)"
+          }
+        }
+      }
+    },
+    "/viewItem/{id}": {
+      "get": {
+        "summary": "View Item with  ID",
+        "tags": [
+          "Items"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the website you want to find",
+            "type": "string",
+            "example": "61de6d87dc609a0d85a64e73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "403": {
+            "description": "User is not authenticated"
+          },
+          "404": {
+            "description": "Item not found with corresponding id"
+          }
+        }
+      }
+    },
+    "/edit/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of item(site) u want to edit ",
+          "type": "string",
+          "example": "61de6d87dc609a0d85a64e73"
+        }
+      ],
+      "post": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "summary": "Edit website credentails ",
+        "tags": [
+          "Items"
+        ],
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "website  with new values of properties",
+            "example": {
+              "url": "https://instagram.com",
+              "category": "Social media",
+              "siteName": "Instagram",
+              "userName": "UseeName",
+              "sitePassword": "Password",
+              "notes": "Instagram password"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "succesfully   updated",
+            "schema": {
+              "$ref": "#/definitions/Item"
+            }
+          },
+          "400": {
+            "description": "Bad request (There is a data availble for corresponding url or Site Name. Please provide the unique url and SiteName .)"
+          }
+        }
+      }
+    },
+    "/itemPassword/{id}": {
+      "get": {
+        "summary": "Copy site Password",
+        "tags": [
+          "Items"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID of the website",
+            "type": "string",
+            "example": "61de6d87dc609a0d85a64e73"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ok"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/sync": {
+      "get": {
+        "summary": "Sync data to file",
+        "tags": [
+          "Items"
+        ],
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Operation successful"
+          },
+          "404": {
+            "description": "Bad request (Error while writing to the file)"
+          }
+        }
+      }
+    }
+  }
+}

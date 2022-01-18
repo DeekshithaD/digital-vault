@@ -39,11 +39,10 @@ module.exports = function (mongoose) {
   /*********************************************GET ITEMS************************************************* */
   itemController.getItems = async (req, res) => {
     try {
-      if (req.query.sector) {
-        const data = await Item.getItemsByCategory(
-          req.user.id,
-          req.query.sector
-        );
+      if (req.query.category) {
+        const query = req.query.category;
+        const category = query.toLowerCase();
+        const data = await Item.getItemsByCategory(req.user.id, category);
         if (data.length === 0) {
           throw new Error("Items are not availble with corresponging category");
         }

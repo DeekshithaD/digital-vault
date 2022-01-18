@@ -16,7 +16,14 @@ module.exports = function (mongoose) {
         passwordResetCount: 1,
       };
       const data = await Users.signUp(userData);
-      utils.sendResponse(req, res, 200, "Success", data);
+      utils.sendResponse(
+        req,
+        res,
+        200,
+        "Success",
+        "",
+        "Account Created Successfully"
+      );
     } catch (err) {
       utils.sendErrorResponse(
         req,

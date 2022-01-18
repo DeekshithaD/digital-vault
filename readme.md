@@ -22,3 +22,39 @@
  4. Adding new website password: User should be able to provide a website URL, a short name for the site, the folder name where the items should be stored (in case if the user wants to have separate folders/categories), username for the site and the password. He can optionally enter some notes. The added password item would appear in the home screen. The app should also fetch the icon from the given URL and add that as logo for that particular item.
  
  5. Each added password would appear as one item in the home screen. Each item would have the following features. The ‘Copy password’ link will copy the password to the clipboard. Tapping on the URL would launch the URL in the browser. Tapping on any remaining portion of the item (logo or the item name) would launch the edit screen where the user could edit the item details.
+
+ ### Packages required
+ 1.  bcryptjs
+ 2.  body-parser
+ 3.  copy-paste
+ 4. express
+ 5. joi
+ 6. joi-objectid
+ 7. joi-oid
+ 8. jsonwebtoken
+ 9. lodash
+ 10.  logo-scrape
+ 11. mongoose
+ 12. multer
+ 13. swagger-jsdoc
+ 14. swagger-ui-express
+ 15.  twilio
+ 16. validator
+ 17. nodemon
+ #### steps to run app
+ - jwt secret key,twilio account credentails ,salt,mongodb details etc.. has to be in config/config.js file
+ - nodemon run app.js or set script in pacakge.json as  `"start": "nodemon app.js"`, then run `npm start`
+ - Api Documentation `http://localhost:8000/api-docs/`
+
+ #### API
+ - /signUp - Create account providing mobile number and MPIn of 4 digit
+ - /Login  - Login using mobile number and MPIn
+ - /forgotMpin - provide phone number an OTP will be sent 
+ - /resetMpin  - verfity OTP and set New MPIn 
+ - /home - User gets all website information he stored.User can also get website information by category (social media)
+ - /addSite - To add new site credentails(url,siteName,username,password,notes)
+- /viewItem/:id - view specific website information by providing the id 
+- /edit/:id - user can edit any item by providing id of the website
+- /itemPassword/:id - copy the website password to clipboard
+- /sync - sync to a file 
+

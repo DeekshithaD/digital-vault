@@ -1,6 +1,8 @@
 const mongoose = require("./config/mongodb");
 const express = require("express");
 const bodyparser = require("body-parser");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 
 var _ = require("lodash");
 const app = express();
@@ -18,7 +20,7 @@ app.all("*", function (req, res, next) {
   next();
 });
 require("./config/loader")(app, mongoose);
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const port = config.app.port;
 app.listen(port, () => {
   console.log(` app listening on port ${port}!`);

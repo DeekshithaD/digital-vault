@@ -7,8 +7,8 @@ module.exports = function (schema, mongoose) {
     const data = await this.find({ user: userId }).select("-__v");
     return data;
   };
-  schema.statics.getItemsByCategory = async function (userId, sector) {
-    const data = await this.find({ user: userId, sector: sector });
+  schema.statics.getItemsByCategory = async function (userId, category) {
+    const data = await this.find({ user: userId, category: category });
     return data;
   };
   schema.statics.viewItem = async function (id) {

@@ -31,6 +31,7 @@ module.exports = function (mongoose) {
       icon: String,
       category: {
         type: String,
+        lowercase: true,
       },
       siteName: {
         type: String,
