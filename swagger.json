@@ -229,6 +229,44 @@
         }
       }
     },
+    "/search": {
+      "get": {
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
+        "tags": [
+          "Items"
+        ],
+        "summary": "Search for website credentails",
+        "parameters": [
+          {
+            "name": "url or sitename",
+            "in": "body",
+            "description": "Search by either url or site name",
+            "type": "string",
+            "example": {
+              "url": "https://instagram.com"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "User is not authenticated"
+          },
+          "400": {
+            "description": "Credentails of url is not stored ||  Credentails of site is not stored"
+          }
+        }
+      }
+    },
     "/add": {
       "post": {
         "security": [

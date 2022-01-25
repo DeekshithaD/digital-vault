@@ -8,6 +8,7 @@ module.exports = (app, mongoose) => {
   router.get("/viewItem/:id", authenticate, controller.viewItem); //view site
   router.get("/itemPassword/:id", authenticate, controller.copyPassword); // copy site password
   router.get("/sync", authenticate, controller.sync); // sync data
+  router.get("/search", authenticate, controller.search); // search data
   router.post("/add", validator.item, authenticate, controller.addItem); // add item(site)
   router.post(
     "/edit/:id",

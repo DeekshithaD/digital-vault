@@ -84,6 +84,36 @@ module.exports = function (mongoose) {
       );
     }
   };
+  /*********************************************SEARCH ITEM************************************************* */
+  itemController.search = async (req, res) => {
+    try {
+      if (req.body.url) {
+        const data = await Item.findOne({
+          user: req.user.id,
+          url: req.body.url,
+        });
+        if (data === null) {
+          throw new Error("Credentails of url is not stored");
+        } else {
+          utils.sendResponse(req, res, 200, "Success", data);
+        }
+      } else if (req.body.siteName) {
+        const data = await Item.findOne({
+          user: req.user.id,
+          siteName: req.body.siteName,
+        });
+        if (data === null) {
+          throw new Error("Credentails of site is not stored");
+        } else {
+          utils.sendResponse(req, res, 200, "Success", data);
+        }
+      } else {
+        throw new Error("Please provide a search key (url or siteName");
+      }
+    } catch (err) {
+      utils.sendErrorResponse(req, res, 400, "fail", err.message);
+    }
+  };
   /*********************************************COPY PASSWORD************************************************* */
   itemController.copyPassword = async (req, res) => {
     try {
